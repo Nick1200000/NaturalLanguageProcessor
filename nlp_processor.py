@@ -20,6 +20,7 @@ nltk.download('words')
 nltk.download('wordnet')
 nltk.download('punkt_tab', quiet=True, raise_on_error=False)
 nltk.download('averaged_perceptron_tagger_eng', quiet=True, raise_on_error=False)
+nltk.download('maxent_ne_chunker_tab', quiet=True, raise_on_error=False)
 
 # Initialize NLTK components
 sia = SentimentIntensityAnalyzer()
