@@ -1,24 +1,50 @@
-// DOM elements
-const textInput = document.getElementById('text-input');
-const analyzeButton = document.getElementById('analyze-btn');
-const resultsContainer = document.getElementById('results-container');
-const loadingSpinner = document.getElementById('loading-spinner');
-const errorContainer = document.getElementById('error-container');
+// DOM elements and event bindings
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize elements
+    const textInput = document.getElementById('text-input');
+    const analyzeButton = document.getElementById('analyze-btn');
+    const resultsContainer = document.getElementById('results-container');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const errorContainer = document.getElementById('error-container');
+    const sampleTextButton = document.getElementById('sample-text-btn');
 
-// Charts objects
-let sentimentChart = null;
-let wordFreqChart = null;
+    // Make elements available globally
+    window.textInput = textInput;
+    window.resultsContainer = resultsContainer;
+    window.loadingSpinner = loadingSpinner;
+    window.errorContainer = errorContainer;
 
-// Event listener for analyze button
-analyzeButton.addEventListener('click', function() {
-    analyzeText();
-});
+    // Charts objects
+    window.sentimentChart = null;
+    window.wordFreqChart = null;
 
-// Listen for Enter key in the textarea
-textInput.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter' && event.ctrlKey) {
-        event.preventDefault();
-        analyzeText();
+    // Only add event listeners if elements exist (on pages where the analyzer is present)
+    if (analyzeButton && textInput) {
+        // Event listener for analyze button
+        analyzeButton.addEventListener('click', function() {
+            analyzeText();
+        });
+
+        // Listen for Enter key in the textarea
+        textInput.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && event.ctrlKey) {
+                event.preventDefault();
+                analyzeText();
+            }
+        });
+        
+        // Set up sample text button
+        if (sampleTextButton) {
+            sampleTextButton.addEventListener('click', loadSampleText);
+        }
+        
+        // Initialize character counter if available
+        const charCounter = document.querySelector('.char-counter');
+        if (charCounter && textInput) {
+            textInput.addEventListener('input', function() {
+                charCounter.textContent = `${this.value.length} characters`;
+            });
+        }
     }
 });
 
@@ -282,5 +308,4 @@ function loadSampleText() {
     textInput.value = sampleTexts[randomIndex];
 }
 
-// Set up sample text button
-document.getElementById('sample-text-btn').addEventListener('click', loadSampleText);
+// This event listener is now handled in the DOMContentLoaded block above

@@ -156,7 +156,7 @@ def summarize_text(text, ratio=0.3):
         # Normalize frequencies
         max_frequency = max(word_frequencies.values()) if word_frequencies else 1
         for word in word_frequencies:
-            word_frequencies[word] = int(word_frequencies[word] / max_frequency * 100) / 100  # Convert to int for compatibility
+            word_frequencies[word] = int((word_frequencies[word] / max_frequency) * 100)  # Convert to integer percentage
         
         # Score sentences
         sentence_scores = {}
