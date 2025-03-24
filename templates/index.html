@@ -1,172 +1,709 @@
 {% extends 'layout.html' %}
 
+{% block title %}TextAnalytica - Natural Language Processing Platform{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card border-0 bg-dark shadow-sm">
-            <div class="card-body">
-                <div class="text-center mb-4">
-                    <h1 class="display-5 fw-bold mb-3">
-                        <i class="fas fa-brain text-info me-2"></i>
-                        NLP Text Analysis
-                    </h1>
-                    <p class="lead text-muted mx-auto" style="max-width: 700px;">
-                        Discover the power of Natural Language Processing. Extract insights, 
-                        sentiment, entities, and more from any text.
-                    </p>
+<section class="hero-section py-5 mb-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 hero-content">
+                <span class="hero-badge">AI-Powered Text Analysis</span>
+                <h1 class="display-4 fw-bold mb-4 text-gradient">Unlock insights from your text with AI</h1>
+                <p class="lead text-muted mb-4">
+                    TextAnalytica's advanced NLP platform helps businesses extract sentiment, entities, summaries, and insights from any text—all in seconds.
+                </p>
+                <div class="d-flex gap-3 mb-5">
+                    <a href="#analyze" class="btn btn-info btn-lg">
+                        <i class="fas fa-rocket me-2"></i>Try It Now
+                    </a>
+                    <a href="#pricing" class="btn btn-outline-light">
+                        <i class="fas fa-tag me-2"></i>View Pricing
+                    </a>
                 </div>
                 
-                <div class="mb-4">
-                    <label for="text-input" class="form-label">Enter text to analyze:</label>
-                    <textarea class="form-control shadow-sm" id="text-input" rows="5"
-                              placeholder="Paste or type text here (minimum 100 characters for best results)..."></textarea>
-                    <div class="form-text">Press Ctrl+Enter to analyze or use the button below</div>
+                <!-- Trust badges -->
+                <div class="d-flex flex-wrap align-items-center mt-4 gap-4">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-shield-alt text-info me-2"></i>
+                        <span class="small">Enterprise-grade security</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-check-circle text-info me-2"></i>
+                        <span class="small">99.9% uptime</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-bolt text-info me-2"></i>
+                        <span class="small">Real-time analysis</span>
+                    </div>
                 </div>
-                
-                <div class="d-flex flex-wrap gap-2 justify-content-center">
-                    <button id="analyze-btn" class="btn btn-primary">
-                        <i class="fas fa-search me-1"></i> Analyze Text
-                    </button>
-                    <button id="sample-text-btn" class="btn btn-outline-secondary">
-                        <i class="fas fa-file-alt me-1"></i> Try Sample Text
-                    </button>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="gradient-border shadow-card p-3">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" class="img-fluid rounded" alt="AI Text Analysis">
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-<!-- Loading Spinner -->
-<div id="loading-spinner" class="text-center my-5 d-none">
-    <div class="spinner-grow text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-    <div class="spinner-grow text-info" role="status" style="animation-delay: 0.2s;">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-    <div class="spinner-grow text-primary" role="status" style="animation-delay: 0.4s;">
-        <span class="visually-hidden">Loading...</span>
-    </div>
-    <p class="text-muted mt-3">Analyzing text...</p>
-</div>
-
-<!-- Error Message Container -->
-<div id="error-container" class="alert alert-danger shadow-sm my-4 d-none" role="alert">
-</div>
-
-<!-- Results Section -->
-<div id="results-container" class="my-4 d-none">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">
-            <i class="fas fa-chart-line text-info me-2"></i>
-            Analysis Results
-        </h2>
-        <span id="sentiment-badge" class="badge rounded-pill bg-secondary">NEUTRAL</span>
-    </div>
-    
-    <div class="row g-4">
-        <!-- Summary Section -->
-        <div class="col-lg-6 mb-4">
-            <div class="card results-card h-100 shadow-sm">
-                <div class="card-header bg-dark">
-                    <h4 class="m-0">
-                        <i class="fas fa-file-alt text-info me-2"></i>
-                        Summary
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <p id="summary-result" class="text-summary"></p>
-                </div>
-            </div>
+<!-- Analyze Text Section -->
+<section id="analyze" class="py-5 mb-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Experience the power of NLP</h2>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                Try our text analysis tool to see how TextAnalytica can transform your content into actionable insights.
+            </p>
         </div>
         
-        <!-- Sentiment Chart -->
-        <div class="col-lg-6 mb-4">
-            <div class="card results-card h-100 shadow-sm">
-                <div class="card-header bg-dark">
-                    <h4 class="m-0">
-                        <i class="fas fa-smile text-info me-2"></i>
-                        Sentiment Analysis
-                    </h4>
-                </div>
-                <div class="card-body text-center">
-                    <div class="chart-container">
-                        <canvas id="sentiment-chart"></canvas>
+        <div class="card shadow-lg border-0 rounded-custom mb-5">
+            <div class="card-body p-4">
+                <div class="textarea-container mb-4">
+                    <textarea class="form-control" id="text-input" rows="6" 
+                              placeholder="Paste or type text here to analyze (minimum 100 characters for best results)..."></textarea>
+                    <div class="char-counter">0 characters</div>
+                    <div class="textarea-actions">
+                        <div>
+                            <button id="sample-text-btn" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-file-alt me-1"></i> Try Sample Text
+                            </button>
+                        </div>
+                        <button id="analyze-btn" class="btn btn-info">
+                            <i class="fas fa-search me-1"></i> Analyze Text
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Word Frequency Chart -->
-        <div class="col-12 mb-4">
-            <div class="card results-card shadow-sm">
-                <div class="card-header bg-dark">
-                    <h4 class="m-0">
-                        <i class="fas fa-sort-amount-down text-info me-2"></i>
-                        Word Frequency
-                    </h4>
+        <!-- Loading Spinner -->
+        <div id="loading-spinner" class="text-center my-5 d-none">
+            <div class="loader mb-3"></div>
+            <p class="lead text-muted">Analyzing text with our AI...</p>
+        </div>
+
+        <!-- Error Message Container -->
+        <div id="error-container" class="alert alert-danger shadow-sm my-4 d-none" role="alert">
+        </div>
+    </div>
+</section>
+
+<!-- Results Section -->
+<section id="results-container" class="py-5 mb-5 d-none">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">
+                <i class="fas fa-chart-line text-info me-2"></i>
+                Analysis Results
+            </h2>
+            <span id="sentiment-badge" class="badge rounded-pill bg-secondary">NEUTRAL</span>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Summary Section -->
+            <div class="col-lg-6 mb-4">
+                <div class="card result-card h-100">
+                    <div class="result-card-header">
+                        <i class="fas fa-file-alt"></i>
+                        <h4>Summary</h4>
+                    </div>
+                    <p id="summary-result" class="mb-0"></p>
                 </div>
-                <div class="card-body">
+            </div>
+            
+            <!-- Sentiment Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card result-card h-100">
+                    <div class="result-card-header">
+                        <i class="fas fa-smile"></i>
+                        <h4>Sentiment Analysis</h4>
+                    </div>
+                    <div class="text-center">
+                        <div class="chart-container">
+                            <canvas id="sentiment-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Word Frequency Chart -->
+            <div class="col-12 mb-4">
+                <div class="card result-card">
+                    <div class="result-card-header">
+                        <i class="fas fa-sort-amount-down"></i>
+                        <h4>Word Frequency</h4>
+                    </div>
                     <div class="chart-container">
                         <canvas id="word-freq-chart"></canvas>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Named Entities -->
-        <div class="col-md-6 mb-4">
-            <div class="card results-card h-100 shadow-sm">
-                <div class="card-header bg-dark">
-                    <h4 class="m-0">
-                        <i class="fas fa-tags text-info me-2"></i>
-                        Named Entities
-                    </h4>
-                </div>
-                <div class="card-body">
+            
+            <!-- Named Entities -->
+            <div class="col-md-6 mb-4">
+                <div class="card result-card h-100">
+                    <div class="result-card-header">
+                        <i class="fas fa-tags"></i>
+                        <h4>Named Entities</h4>
+                    </div>
                     <div id="entities-container">
                         <!-- Entities will be inserted here by JavaScript -->
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Keywords -->
-        <div class="col-md-6 mb-4">
-            <div class="card results-card h-100 shadow-sm">
-                <div class="card-header bg-dark">
-                    <h4 class="m-0">
-                        <i class="fas fa-key text-info me-2"></i>
-                        Keywords
-                    </h4>
-                </div>
-                <div class="card-body">
+            
+            <!-- Keywords -->
+            <div class="col-md-6 mb-4">
+                <div class="card result-card h-100">
+                    <div class="result-card-header">
+                        <i class="fas fa-key"></i>
+                        <h4>Keywords</h4>
+                    </div>
                     <div id="keywords-container">
                         <!-- Keywords will be inserted here by JavaScript -->
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    
-    <!-- Added information section -->
-    <div class="card mt-4 shadow-sm bg-dark border-0">
-        <div class="card-body">
-            <h4 class="mb-3"><i class="fas fa-info-circle text-info me-2"></i>About This Analysis</h4>
-            <p class="text-muted">
-                This analysis uses Natural Language Processing techniques to extract meaningful information from your text. 
-                The sentiment analysis evaluates the emotional tone, while the named entity recognition identifies key people, 
-                organizations, locations, and more mentioned in your text.
-            </p>
-            <p class="text-muted mb-0">
-                For more accurate results, provide a larger text sample with at least 100-200 words.
-            </p>
+        
+        <!-- Save Analysis CTA -->
+        <div class="card mt-4 shadow-lg rounded-custom bg-dark border-0">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-8 mb-3 mb-lg-0">
+                        <h4 class="text-info mb-2">Save Your Analysis</h4>
+                        <p class="text-light mb-0">
+                            Create an account to save your analyses, access advanced features, and track insights over time.
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a href="{{ url_for('register') }}" class="btn btn-info me-2">
+                            <i class="fas fa-user-plus me-1"></i> Sign Up
+                        </a>
+                        <a href="{{ url_for('login') }}" class="btn btn-outline-light">
+                            <i class="fas fa-sign-in-alt me-1"></i> Login
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-5 mb-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Powerful NLP Features</h2>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                Our platform combines state-of-the-art NLP techniques to deliver comprehensive text analysis for businesses and developers.
+            </p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Feature 1 -->
+            <div class="col-md-4">
+                <div class="feature-box shadow-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <h4>Sentiment Analysis</h4>
+                    <p class="text-muted">
+                        Understand the emotional tone of your text with detailed sentiment breakdown including positive, negative, and neutral scores.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="col-md-4">
+                <div class="feature-box shadow-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h4>Entity Recognition</h4>
+                    <p class="text-muted">
+                        Automatically identify and categorize key entities such as people, organizations, locations, dates, and more.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="col-md-4">
+                <div class="feature-box shadow-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h4>Text Summarization</h4>
+                    <p class="text-muted">
+                        Generate concise and meaningful summaries of longer texts, preserving the core information and key points.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="col-md-4">
+                <div class="feature-box shadow-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h4>Keyword Extraction</h4>
+                    <p class="text-muted">
+                        Extract the most important words and phrases from your text to understand the main topics and themes.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="col-md-4">
+                <div class="feature-box shadow-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h4>Word Frequency Analysis</h4>
+                    <p class="text-muted">
+                        Visualize the most common words in your text with interactive charts to identify patterns and themes.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="col-md-4">
+                <div class="feature-box shadow-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h4>API Access</h4>
+                    <p class="text-muted">
+                        Integrate our powerful NLP capabilities directly into your applications with our easy-to-use REST API.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Use Cases -->
+<section class="py-5 mb-5 bg-dark rounded-custom">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">How Businesses Use TextAnalytica</h2>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                Discover how organizations across industries leverage our NLP platform to gain valuable insights.
+            </p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Use Case 1 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-card">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-comments text-info fa-2x"></i>
+                        </div>
+                        <h4>Customer Feedback Analysis</h4>
+                        <p class="text-muted">
+                            Analyze customer reviews, support tickets, and feedback to identify sentiment trends, common issues, and improvement opportunities.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Use Case 2 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-card">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-newspaper text-info fa-2x"></i>
+                        </div>
+                        <h4>Content Categorization</h4>
+                        <p class="text-muted">
+                            Automatically categorize articles, blog posts, and other content based on topics, themes, and entities mentioned.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Use Case 3 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-card">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-chart-line text-info fa-2x"></i>
+                        </div>
+                        <h4>Social Media Monitoring</h4>
+                        <p class="text-muted">
+                            Track brand mentions, analyze sentiment, and identify trending topics across social media platforms.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Use Case 4 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-card">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-search text-info fa-2x"></i>
+                        </div>
+                        <h4>Research & Data Mining</h4>
+                        <p class="text-muted">
+                            Extract insights from large volumes of text data, such as research papers, reports, and academic literature.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Use Case 5 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-card">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-robot text-info fa-2x"></i>
+                        </div>
+                        <h4>Chatbot Enhancement</h4>
+                        <p class="text-muted">
+                            Improve chatbot understanding and responses by analyzing user queries for intent, sentiment, and key entities.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Use Case 6 -->
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-card">
+                    <div class="card-body p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-file-contract text-info fa-2x"></i>
+                        </div>
+                        <h4>Document Processing</h4>
+                        <p class="text-muted">
+                            Automate the extraction of key information from contracts, legal documents, and business reports.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section id="pricing" class="py-5 mb-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Simple, Transparent Pricing</h2>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                Choose the plan that best fits your needs. All plans include our core NLP features with different usage limits.
+            </p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Free Plan -->
+            <div class="col-md-4">
+                <div class="pricing-card h-100">
+                    <div class="pricing-header">
+                        <h3>Free</h3>
+                        <div class="pricing-price">$0</div>
+                        <div class="pricing-period">forever</div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check text-success me-2"></i>3,000 characters per analysis</li>
+                            <li><i class="fas fa-check text-success me-2"></i>5 analyses per day</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Basic NLP features</li>
+                            <li><i class="fas fa-check text-success me-2"></i>CSV export</li>
+                            <li><i class="fas fa-times text-danger me-2"></i>Advanced NLP features</li>
+                            <li><i class="fas fa-times text-danger me-2"></i>API access</li>
+                        </ul>
+                        <div class="d-grid mt-4">
+                            <a href="{{ url_for('register') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-1"></i> Sign Up Free
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Standard Plan -->
+            <div class="col-md-4">
+                <div class="pricing-card h-100 popular">
+                    <div class="pricing-header">
+                        <span class="badge bg-info mb-2">Most Popular</span>
+                        <h3>Standard</h3>
+                        <div class="pricing-price">$4.99</div>
+                        <div class="pricing-period">per month</div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check text-success me-2"></i>10,000 characters per analysis</li>
+                            <li><i class="fas fa-check text-success me-2"></i>30 analyses per day</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Advanced NLP features</li>
+                            <li><i class="fas fa-check text-success me-2"></i>CSV & PDF exports</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Save unlimited analyses</li>
+                            <li><i class="fas fa-times text-danger me-2"></i>API access</li>
+                        </ul>
+                        <div class="d-grid mt-4">
+                            <a href="{{ url_for('register') }}" class="btn btn-info">
+                                <i class="fas fa-arrow-circle-up me-1"></i> Get Started
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Premium Plan -->
+            <div class="col-md-4">
+                <div class="pricing-card h-100">
+                    <div class="pricing-header">
+                        <h3>Premium</h3>
+                        <div class="pricing-price">$9.99</div>
+                        <div class="pricing-period">per month</div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check text-success me-2"></i>50,000 characters per analysis</li>
+                            <li><i class="fas fa-check text-success me-2"></i>100 analyses per day</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Advanced NLP features</li>
+                            <li><i class="fas fa-check text-success me-2"></i>All export formats</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Batch processing</li>
+                            <li><i class="fas fa-check text-success me-2"></i>API access</li>
+                        </ul>
+                        <div class="d-grid mt-4">
+                            <a href="{{ url_for('register') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-crown me-1"></i> Go Premium
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Enterprise CTA -->
+        <div class="card mt-5 shadow-lg bg-dark border-0 rounded-custom">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-9 mb-4 mb-lg-0">
+                        <h3 class="text-info mb-2">Enterprise Solutions</h3>
+                        <p class="text-light mb-0">
+                            Need a custom solution for your organization? Our enterprise plan includes custom integrations, dedicated support, SLA guarantees, and volume discounts.
+                        </p>
+                    </div>
+                    <div class="col-lg-3 text-lg-end">
+                        <a href="#" class="btn btn-light">
+                            <i class="fas fa-envelope me-1"></i> Contact Sales
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-5 mb-5 bg-dark rounded-custom">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Trusted by Innovative Companies</h2>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                See what our customers have to say about TextAnalytica's powerful NLP capabilities.
+            </p>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Testimonial 1 -->
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <img src="https://randomuser.me/api/portraits/women/26.jpg" alt="Customer" class="testimonial-avatar mx-auto d-block">
+                    <div class="text-center mb-3">
+                        <h5>Sarah Johnson</h5>
+                        <p class="text-muted small">Product Manager at TechCorp</p>
+                    </div>
+                    <p class="mb-0">
+                        "TextAnalytica transformed how we handle customer feedback. We're now able to automatically categorize and prioritize thousands of customer comments daily."
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Testimonial 2 -->
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Customer" class="testimonial-avatar mx-auto d-block">
+                    <div class="text-center mb-3">
+                        <h5>David Chen</h5>
+                        <p class="text-muted small">CTO at DataInsights</p>
+                    </div>
+                    <p class="mb-0">
+                        "The API integration was seamless and the accuracy of the sentiment analysis has been remarkably high. Our content recommendation engine is now 40% more effective."
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Testimonial 3 -->
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Customer" class="testimonial-avatar mx-auto d-block">
+                    <div class="text-center mb-3">
+                        <h5>Maria Rodriguez</h5>
+                        <p class="text-muted small">Research Director at EduLearn</p>
+                    </div>
+                    <p class="mb-0">
+                        "We use TextAnalytica to analyze research papers and identify trends in educational technology. The entity recognition and summarization features save us countless hours."
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Client Logos -->
+        <div class="customer-logos mt-5">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png" alt="Client Logo" class="customer-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png" alt="Client Logo" class="customer-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/2560px-Google_2015_logo.svg.png" alt="Client Logo" class="customer-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/1667px-Apple_logo_black.svg.png" alt="Client Logo" class="customer-logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Spotify_logo_with_text.svg/2560px-Spotify_logo_with_text.svg.png" alt="Client Logo" class="customer-logo">
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-5 mb-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="mb-3">Frequently Asked Questions</h2>
+            <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                Find answers to common questions about TextAnalytica's features, capabilities, and subscription plans.
+            </p>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-10 mx-auto">
+                <div class="accordion" id="faqAccordion">
+                    <!-- FAQ Item 1 -->
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" aria-expanded="false" aria-controls="faq1">
+                                How accurate is the sentiment analysis?
+                            </button>
+                        </h2>
+                        <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Our sentiment analysis is built on state-of-the-art NLP models with an accuracy rate of over 85% across various domains and text types. The analysis considers context, tone, and linguistic nuances to provide a comprehensive sentiment assessment including positive, negative, and neutral scores.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 2 -->
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" aria-expanded="false" aria-controls="faq2">
+                                What languages does TextAnalytica support?
+                            </button>
+                        </h2>
+                        <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Currently, TextAnalytica fully supports English text analysis. We offer beta support for Spanish, French, German, and Chinese, with more languages coming soon. Our roadmap includes expanding to over 20 languages by the end of the year.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 3 -->
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" aria-expanded="false" aria-controls="faq3">
+                                How does the API rate limiting work?
+                            </button>
+                        </h2>
+                        <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Premium plan subscribers get 5,000 API requests per day. Each request can contain up to 50,000 characters for analysis. Our API uses standard rate limiting with clear headers showing your current usage and limits. Enterprise plans offer customizable rate limits based on your needs.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 4 -->
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" aria-expanded="false" aria-controls="faq4">
+                                Is my data secure and private?
+                            </button>
+                        </h2>
+                        <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Yes, we take data security and privacy seriously. All data is encrypted in transit and at rest. We do not use your text data to train our models. We comply with GDPR and CCPA regulations, and you can request deletion of your data at any time through your account settings.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- FAQ Item 5 -->
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" aria-expanded="false" aria-controls="faq5">
+                                Can I cancel my subscription at any time?
+                            </button>
+                        </h2>
+                        <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">
+                                Absolutely. You can upgrade, downgrade, or cancel your subscription at any time from your account dashboard. There are no long-term commitments or cancellation fees. Changes to your subscription will take effect at the start of your next billing cycle.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 mb-5 wave-bg bg-dark rounded-custom text-center">
+    <div class="waves">
+        <div class="wave wave1"></div>
+        <div class="wave wave2"></div>
+    </div>
+    <div class="container py-5 position-relative">
+        <h2 class="display-5 fw-bold mb-4 text-white">Ready to unlock insights from your text?</h2>
+        <p class="lead text-light mb-5 mx-auto" style="max-width: 700px;">
+            Join thousands of businesses using TextAnalytica to transform their text data into actionable insights.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="#analyze" class="btn btn-info btn-lg">
+                <i class="fas fa-rocket me-2"></i>Try It Free
+            </a>
+            <a href="{{ url_for('register') }}" class="btn btn-light btn-lg">
+                <i class="fas fa-user-plus me-2"></i>Sign Up Now
+            </a>
+        </div>
+    </div>
+</section>
 {% endblock %}
 
 {% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Character counter for textarea
+    const textarea = document.getElementById('text-input');
+    const charCounter = document.querySelector('.char-counter');
+    
+    textarea.addEventListener('input', function() {
+        charCounter.textContent = `${this.value.length} characters`;
+    });
+    
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href').substring(1);
+            if (!targetId) return;
+            
+            const targetElement = document.getElementById(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+});
+</script>
 <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}

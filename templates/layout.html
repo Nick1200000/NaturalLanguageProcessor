@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <meta name="description" content="NLP Text Analyzer - Natural Language Processing tool for text analysis, sentiment, entities, and more.">
-    <meta name="keywords" content="NLP, text analysis, sentiment analysis, natural language processing, entity recognition">
-    <meta name="author" content="NLP Text Analyzer">
-    <title>NLP Text Analyzer</title>
+    <meta name="description" content="TextAnalytica - Advanced NLP platform for text analysis, sentiment, entities, summarization, and more.">
+    <meta name="keywords" content="NLP, text analysis, sentiment analysis, natural language processing, entity recognition, AI text analysis, business intelligence">
+    <meta name="author" content="TextAnalytica">
+    <title>{% block title %}TextAnalytica - Advanced NLP Platform{% endblock %}</title>
     
     <!-- Bootstrap CSS (Replit Theme) -->
     <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
@@ -21,36 +21,86 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+    
+    <!-- Open Graph meta tags for social sharing -->
+    <meta property="og:title" content="TextAnalytica - Advanced NLP Platform">
+    <meta property="og:description" content="Powerful text analysis platform for businesses and developers with sentiment analysis, entity recognition, summarization, and more.">
+    <meta property="og:url" content="https://textanalytica.com">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ url_for('static', filename='img/textanalytica-og.png', _external=True) }}">
+    
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TextAnalytica - Advanced NLP Platform">
+    <meta name="twitter:description" content="Powerful text analysis platform for businesses and developers with sentiment analysis, entity recognition, summarization, and more.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='img/textanalytica-og.png', _external=True) }}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 sticky-top shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-brain me-2 text-info"></i>
-                <span class="fw-bold">NLP</span> Text Analyzer
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <svg class="me-2" width="32" height="32" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M36 0C16.118 0 0 16.118 0 36C0 55.882 16.118 72 36 72C55.882 72 72 55.882 72 36C72 16.118 55.882 0 36 0ZM36 8C51.464 8 64 20.536 64 36C64 51.464 51.464 64 36 64C20.536 64 8 51.464 8 36C8 20.536 20.536 8 36 8Z" fill="#17a2b8"/>
+                    <circle cx="36" cy="36" r="12" fill="#17a2b8"/>
+                    <rect x="20" y="34" width="32" height="4" fill="#17a2b8"/>
+                    <rect x="34" y="20" width="4" height="32" fill="#17a2b8"/>
+                </svg>
+                <span class="fw-bold">Text<span class="text-info">Analytica</span></span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="/">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="/">
                             <i class="fas fa-home me-1"></i> Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://github.com" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-github me-1"></i> GitHub
+                        <a class="nav-link {% if request.path == '/api/docs' %}active{% endif %}" href="{{ url_for('api_docs') }}">
+                            <i class="fas fa-code me-1"></i> API
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://github.com" target="_blank" rel="noopener noreferrer">
-                            <i class="fas fa-book me-1"></i> Docs
+                        <a class="nav-link" href="#pricing">
+                            <i class="fas fa-tag me-1"></i> Pricing
                         </a>
                     </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle me-1"></i> {{ current_user.username }}
+                                {% if current_user.subscription_tier != 'free' %}
+                                <span class="badge rounded-pill bg-info ms-1">{{ current_user.subscription_tier|capitalize }}</span>
+                                {% endif %}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ url_for('dashboard') }}"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('subscription') }}"><i class="fas fa-credit-card me-2"></i>Subscription</a></li>
+                                {% if current_user.is_premium() %}
+                                <li><a class="dropdown-item" href="{{ url_for('api_docs') }}"><i class="fas fa-code me-2"></i>API Access</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/login' %}active{% endif %}" href="{{ url_for('login') }}">
+                                <i class="fas fa-sign-in-alt me-1"></i> Login
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-info btn-sm ms-2 mt-1" href="{{ url_for('register') }}">
+                                <i class="fas fa-user-plus me-1"></i> Sign Up
+                            </a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -60,22 +110,69 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-dark text-light py-4 mt-5">
+    <footer class="bg-dark text-light py-4 mt-5 shadow-lg">
         <div class="container">
             <div class="row">
-                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                    <h5><i class="fas fa-brain text-info me-2"></i> NLP Text Analyzer</h5>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <div class="d-flex align-items-center mb-3">
+                        <svg class="me-2" width="24" height="24" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M36 0C16.118 0 0 16.118 0 36C0 55.882 16.118 72 36 72C55.882 72 72 55.882 72 36C72 16.118 55.882 0 36 0ZM36 8C51.464 8 64 20.536 64 36C64 51.464 51.464 64 36 64C20.536 64 8 51.464 8 36C8 20.536 20.536 8 36 8Z" fill="#17a2b8"/>
+                            <circle cx="36" cy="36" r="12" fill="#17a2b8"/>
+                            <rect x="20" y="34" width="32" height="4" fill="#17a2b8"/>
+                            <rect x="34" y="20" width="4" height="32" fill="#17a2b8"/>
+                        </svg>
+                        <h5 class="mb-0">Text<span class="text-info">Analytica</span></h5>
+                    </div>
                     <p class="text-muted small">
-                        A powerful tool for analyzing text using Natural Language Processing techniques.
+                        Advanced natural language processing platform for businesses and developers. Extract insights, analyze sentiment, identify entities, and summarize text content with state-of-the-art NLP technology.
                     </p>
                 </div>
-                <div class="col-md-6 text-center text-md-end">
-                    <p>
-                        <span class="me-3"><i class="fas fa-flask text-info me-1"></i> Flask</span>
-                        <span class="me-3"><i class="fas fa-brain text-info me-1"></i> NLTK</span>
-                        <span><i class="fas fa-chart-bar text-info me-1"></i> Chart.js</span>
-                    </p>
-                    <p class="text-muted small">© 2025 NLP Text Analyzer</p>
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h6 class="text-info">Product</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="/" class="nav-link p-0 text-muted small">Home</a></li>
+                        <li class="nav-item mb-2"><a href="#features" class="nav-link p-0 text-muted small">Features</a></li>
+                        <li class="nav-item mb-2"><a href="#pricing" class="nav-link p-0 text-muted small">Pricing</a></li>
+                        <li class="nav-item mb-2"><a href="{{ url_for('api_docs') }}" class="nav-link p-0 text-muted small">API</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h6 class="text-info">Resources</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">Documentation</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">Blog</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">Tutorials</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">Case Studies</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h6 class="text-info">Company</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">About</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">Team</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">Careers</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-2">
+                    <h6 class="text-info">Legal</h6>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">Privacy</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">Terms</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted small">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <div class="mb-3 mb-md-0">
+                    <p class="text-muted small mb-0">© 2025 TextAnalytica. All rights reserved.</p>
+                </div>
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-info"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-info"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-info"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="text-info"><i class="fab fa-github"></i></a>
                 </div>
             </div>
         </div>
@@ -84,7 +181,10 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Custom JS -->
+    <!-- App JS -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    
+    <!-- Custom Page Scripts -->
     {% block scripts %}{% endblock %}
 </body>
 </html>
