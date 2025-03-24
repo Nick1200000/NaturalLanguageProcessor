@@ -1,0 +1,71 @@
+/* Additional custom styles beyond Bootstrap */
+
+/* Textarea with fixed height */
+#text-input {
+    min-height: 200px;
+    resize: vertical;
+}
+
+/* Results section styling */
+.results-card {
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.results-card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+}
+
+/* Keyword badges and entity tags custom styling */
+.badge {
+    font-size: 0.8rem;
+    padding: 0.5em 0.8em;
+}
+
+/* Loading spinner animation */
+.spinner-grow {
+    animation-duration: 1s;
+}
+
+/* Chart containers */
+.chart-container {
+    position: relative;
+    height: 250px;
+    width: 100%;
+}
+
+/* Make sure charts are responsive */
+canvas {
+    max-width: 100%;
+}
+
+/* Ensure good contrast for text */
+.text-summary {
+    line-height: 1.6;
+}
+
+/* Media queries for better responsiveness */
+@media (max-width: 768px) {
+    .chart-container {
+        height: 200px;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
+    
+    h4 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .chart-container {
+        height: 180px;
+    }
+    
+    #text-input {
+        min-height: 150px;
+    }
+}

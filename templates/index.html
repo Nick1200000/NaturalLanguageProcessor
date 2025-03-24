@@ -1,0 +1,152 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 bg-dark">
+            <div class="card-body">
+                <h2 class="card-title mb-3">
+                    <i class="fas fa-comment-alt me-2"></i>
+                    NLP Text Analysis
+                </h2>
+                <p class="card-text text-muted">
+                    Analyze text using Natural Language Processing techniques to extract insights, 
+                    sentiment, entities, and more. Enter your text below or try with a sample.
+                </p>
+                
+                <div class="mb-3">
+                    <label for="text-input" class="form-label">Enter text to analyze:</label>
+                    <textarea class="form-control" id="text-input" 
+                              placeholder="Paste or type text here (minimum 100 characters for best results)..."></textarea>
+                    <div class="form-text">Press Ctrl+Enter to analyze or use the button below</div>
+                </div>
+                
+                <div class="d-flex gap-2">
+                    <button id="analyze-btn" class="btn btn-primary">
+                        <i class="fas fa-search me-1"></i> Analyze Text
+                    </button>
+                    <button id="sample-text-btn" class="btn btn-outline-secondary">
+                        <i class="fas fa-file-alt me-1"></i> Try Sample Text
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading Spinner -->
+<div id="loading-spinner" class="text-center my-5 d-none">
+    <div class="spinner-grow text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-info" role="status" style="animation-delay: 0.2s;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-primary" role="status" style="animation-delay: 0.4s;">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-muted mt-3">Analyzing text...</p>
+</div>
+
+<!-- Error Message Container -->
+<div id="error-container" class="alert alert-danger my-4 d-none" role="alert">
+</div>
+
+<!-- Results Section -->
+<div id="results-container" class="my-4 d-none">
+    <h3 class="mb-4">
+        <i class="fas fa-chart-line me-2"></i>
+        Analysis Results
+    </h3>
+    
+    <div class="row g-4">
+        <!-- Summary Section -->
+        <div class="col-md-6">
+            <div class="card results-card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="m-0">
+                        <i class="fas fa-file-alt me-2"></i>
+                        Summary
+                    </h4>
+                    <span id="sentiment-badge" class="badge rounded-pill bg-secondary">NEUTRAL</span>
+                </div>
+                <div class="card-body">
+                    <p id="summary-result" class="text-summary"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sentiment Chart -->
+        <div class="col-md-6">
+            <div class="card results-card h-100">
+                <div class="card-header">
+                    <h4 class="m-0">
+                        <i class="fas fa-smile me-2"></i>
+                        Sentiment Analysis
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="sentiment-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Word Frequency Chart -->
+        <div class="col-12">
+            <div class="card results-card">
+                <div class="card-header">
+                    <h4 class="m-0">
+                        <i class="fas fa-sort-amount-down me-2"></i>
+                        Word Frequency
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="word-freq-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Named Entities -->
+        <div class="col-md-6">
+            <div class="card results-card h-100">
+                <div class="card-header">
+                    <h4 class="m-0">
+                        <i class="fas fa-tags me-2"></i>
+                        Named Entities
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div id="entities-container">
+                        <!-- Entities will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Keywords -->
+        <div class="col-md-6">
+            <div class="card results-card h-100">
+                <div class="card-header">
+                    <h4 class="m-0">
+                        <i class="fas fa-key me-2"></i>
+                        Keywords
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div id="keywords-container">
+                        <!-- Keywords will be inserted here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}
