@@ -5,7 +5,7 @@ channel = "stable-24_05"
 
 [deployment]
 deploymentTarget = "autoscale"
-run = ["gunicorn", "--bind", "0.0.0.0:5000", "main:app"]
+run = ["sh", "-c", "streamlit run streamlit_app.py --server.address=0.0.0.0 --server.port=5000"]
 
 [workflows]
 runButton = "Project"
