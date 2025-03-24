@@ -1,153 +1,105 @@
-# NLP Text Analyzer
+# NLP Analyzer
 
-![NLP Text Analyzer Banner](https://i.imgur.com/RqNW1WT.png)
+![NLP Analyzer](generated-icon.png)
+
+A powerful text analysis application using Natural Language Processing to extract insights from text data, packaged as both an open-source project and a commercial product.
 
 ## Overview
-NLP Text Analyzer is a web application that demonstrates various natural language processing techniques to analyze text. It features sentiment analysis, entity recognition, text summarization, keyword extraction, and interactive visualizations.
 
-The application is designed to be responsive and user-friendly, providing immediate insights into the text that you input. It's a great example of how NLP can be used to extract meaningful information from unstructured text data.
+NLP Analyzer is a Flask-based web application that provides sophisticated text analysis features, including:
 
-## Demo
-![Application Demo](https://i.imgur.com/bHQd82R.gif)
+- Sentiment Analysis
+- Named Entity Recognition
+- Text Summarization
+- Keyword Extraction
+- Word Frequency Analysis with Visualizations
+
+The platform is designed for both casual users and professionals who need to extract meaningful insights from text data for research, content analysis, market research, or customer feedback evaluation.
 
 ## Features
 
-- **Text Summarization**: Extract the key points from long texts
-- **Sentiment Analysis**: Determine if the text conveys positive, negative, or neutral sentiment
-- **Named Entity Recognition**: Identify and categorize named entities (people, organizations, locations, etc.)
-- **Keyword Extraction**: Identify the most important terms in the text
-- **Word Frequency Analysis**: Visualize the most commonly used words
-- **Interactive Visualizations**: See the results through charts and visual elements
-- **Responsive Design**: Works on desktop, tablet, and mobile devices
-- **Error Handling**: Robust error handling for a smooth user experience
+- **Comprehensive NLP Analysis**: Multiple analysis techniques in one platform
+- **Interactive Visualizations**: Chart.js-powered data visualizations
+- **Responsive Design**: Mobile-friendly Bootstrap interface
+- **User Accounts**: Save and manage your analyses
+- **Tiered Subscriptions**: Free, Standard, and Premium tiers with different feature sets
+- **API Access**: Programmatic access for Premium users
+- **Extensive Documentation**: User guides and API reference
 
-## Technologies Used
+## Installation
 
-- **Backend**: Flask (Python web framework)
-- **NLP Processing**: NLTK (Natural Language Toolkit)
-- **Frontend**: HTML, CSS, JavaScript
-- **Styling**: Bootstrap 5 (Dark Theme)
-- **Visualizations**: Chart.js
-- **Icons**: Font Awesome
+### Quick Start with Docker
 
-## Getting Started
+```bash
+# Clone the repository
+git clone https://github.com/your-org/nlp-analyzer.git
+cd nlp-analyzer
 
-### Prerequisites
+# Start with Docker Compose
+docker-compose up -d
 
-- Python 3.6 or higher
-- Pip (Python package installer)
-
-### Installation
-
-1. Clone the repository:
-   ```
-   git clone https://github.com/yourusername/nlp-text-analyzer.git
-   cd nlp-text-analyzer
-   ```
-
-2. Install the required packages:
-   ```
-   pip install flask nltk gunicorn flask-sqlalchemy email-validator psycopg2-binary
-   ```
-
-3. Download NLTK data (will be downloaded automatically on first run, but you can do it manually):
-   ```python
-   import nltk
-   nltk.download('punkt')
-   nltk.download('stopwords')
-   nltk.download('vader_lexicon')
-   nltk.download('averaged_perceptron_tagger')
-   nltk.download('maxent_ne_chunker')
-   nltk.download('words')
-   nltk.download('wordnet')
-   ```
-
-### Running the Application
-
-1. Start the Flask server:
-   ```
-   python main.py
-   ```
-
-2. For production deployment:
-   ```
-   gunicorn --bind 0.0.0.0:5000 main:app
-   ```
-
-3. Open your web browser and go to `http://localhost:5000`
-
-## Usage
-
-1. Enter or paste text into the text area (or use the "Try Sample Text" button)
-2. Click "Analyze Text" or press Ctrl+Enter
-3. View the analysis results in the various sections:
-   - Summary
-   - Sentiment Analysis
-   - Word Frequency
-   - Named Entities
-   - Keywords
-
-## Project Structure
-
-```
-├── static/                  # Static assets
-│   ├── css/                 # CSS styles
-│   │   └── custom.css       # Custom styling beyond Bootstrap
-│   └── js/                  # JavaScript files
-│       └── app.js           # Main application logic
-├── templates/               # HTML templates
-│   ├── index.html           # Main page template
-│   └── layout.html          # Base layout template
-├── app.py                   # Flask application routes and configuration
-├── main.py                  # Application entry point
-├── nlp_processor.py         # NLP processing functions
-└── README.md                # Project documentation
+# Access at http://localhost:5000
 ```
 
-## Key Components
+### Local Development Setup
 
-### `app.py`
-Contains the Flask application setup, routes, and request handling.
+```bash
+# Clone the repository
+git clone https://github.com/your-org/nlp-analyzer.git
+cd nlp-analyzer
 
-### `nlp_processor.py`
-Implements all NLP functionality:
-- Text preprocessing
-- Sentiment analysis
-- Entity extraction
-- Text summarization
-- Keyword extraction
-- Word frequency analysis
+# Install dependencies
+pip install -e .
 
-### `static/js/app.js`
-Handles:
-- AJAX requests to the backend
-- Chart creation and updates
-- Dynamic content rendering
-- User interactions
+# Download NLTK resources
+python -c "import nltk; nltk.download(['punkt', 'stopwords', 'vader_lexicon', 'averaged_perceptron_tagger', 'maxent_ne_chunker', 'words', 'wordnet'])"
 
-### `templates/`
-Contains Jinja2 templates for rendering HTML pages.
+# Set up environment variables
+export DATABASE_URL=postgresql://username:password@localhost:5432/nlp_analyzer
+export SESSION_SECRET=your-secure-session-key
 
-## Future Enhancements
+# Run the application
+python main.py
+```
 
-- Topic modeling to identify key themes
-- Text classification capabilities
-- Multilingual support
-- User accounts to save analysis history
-- Export functionality for reports
-- Enhanced visualizations
+## Documentation
 
-## Contributing
+- [User Guide](docs/user_guide.md) - End-user documentation
+- [Technical Guide](docs/technical_guide.md) - Installation, deployment, and development guide
+- [API Reference](docs/api_reference.md) - Complete API documentation for Premium users
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+## Deployment Options
+
+NLP Analyzer can be deployed in various environments:
+
+- Docker container deployment (Dockerfile included)
+- Multi-container setup (docker-compose.yml included)
+- Kubernetes cluster (k8s manifests included)
+- Traditional server deployment (systemd service example in docs)
+
+CI/CD configurations are included for:
+- GitHub Actions
+- GitLab CI
+- Jenkins
+
+## Screenshots
+
+![Dashboard](static/img/screenshots/dashboard.png)
+*User dashboard with saved analyses*
+
+![Analysis Results](static/img/screenshots/analysis.png)
+*Interactive analysis results with visualizations*
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+NLP Analyzer is released under the MIT License. See [LICENSE](LICENSE) for details.
 
-## Acknowledgments
+## Contributing
 
-- NLTK team for their excellent NLP library
-- Bootstrap team for the responsive design framework
-- Chart.js contributors for the visualization library
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
+## Support
+
+- For issues and bugs: Submit a GitHub issue
+- For feature requests: Submit a GitHub issue with the "enhancement" label
+- For commercial support: Contact support@nlp-analyzer.example.com
