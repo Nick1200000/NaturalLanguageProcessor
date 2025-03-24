@@ -161,16 +161,17 @@ def analyze():
                 'error': 'No text provided for analysis'
             }), 400
         
-        # Check text length limit for authenticated users
+        # For demo purposes, let's remove the character limit
+        # Only keep a very high limit to prevent abuse
         if current_user.is_authenticated:
             limits = current_user.get_tier_limits()
-            if len(text) > limits['text_length']:
+            if len(text) > 100000:  # Very high limit to prevent abuse
                 return jsonify({
-                    'error': f'Text exceeds the {limits["text_length"]} character limit for your subscription tier. Please upgrade or shorten your text.'
+                    'error': f'Text exceeds 100,000 character limit. Please shorten your text.'
                 }), 403
-        elif len(text) > 1500:  # Guest user limit
+        elif len(text) > 100000:  # Same high limit for guest users
             return jsonify({
-                'error': 'Text exceeds the 1500 character limit for guest users. Please sign up for an account.'
+                'error': 'Text exceeds 100,000 character limit. Please shorten your text.'
             }), 403
             
         # Perform NLP analyses

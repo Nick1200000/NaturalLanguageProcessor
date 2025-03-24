@@ -1,0 +1,299 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0">
+                        <i class="fas fa-crown text-info me-2"></i>Subscription Plans
+                    </h2>
+                    <span class="badge rounded-pill bg-primary">Current: {{ user.subscription_tier|capitalize }}</span>
+                </div>
+                <p class="text-muted mt-2">Choose the plan that's right for you</p>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Free Plan -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm h-100 {% if user.subscription_tier == 'free' %}border border-primary{% endif %}">
+            <div class="card-header bg-dark text-center">
+                <h3 class="m-0">Free</h3>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="display-4">$0</div>
+                    <p class="text-muted">per month</p>
+                </div>
+                
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>3,000 characters per analysis
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>5 analyses per day
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>Basic NLP features
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>CSV export
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-times text-danger me-2"></i>Advanced NLP features
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-times text-danger me-2"></i>API access
+                    </li>
+                </ul>
+                
+                <div class="d-grid">
+                    {% if user.subscription_tier == 'free' %}
+                        <button class="btn btn-outline-secondary" disabled>
+                            <i class="fas fa-check-circle me-1"></i>Current Plan
+                        </button>
+                    {% else %}
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-circle-down me-1"></i>Downgrade to Free
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Standard Plan -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm h-100 {% if user.subscription_tier == 'standard' %}border border-primary{% endif %}">
+            <div class="card-header bg-dark text-center">
+                <h3 class="m-0">Standard</h3>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="display-4">$4.99</div>
+                    <p class="text-muted">per month</p>
+                </div>
+                
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>10,000 characters per analysis
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>30 analyses per day
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>Advanced NLP features
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>CSV & PDF exports
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-times text-danger me-2"></i>Batch processing
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-times text-danger me-2"></i>API access
+                    </li>
+                </ul>
+                
+                <div class="d-grid">
+                    {% if user.subscription_tier == 'standard' %}
+                        <button class="btn btn-outline-secondary" disabled>
+                            <i class="fas fa-check-circle me-1"></i>Current Plan
+                        </button>
+                    {% elif user.subscription_tier == 'free' %}
+                        <button class="btn btn-primary">
+                            <i class="fas fa-arrow-circle-up me-1"></i>Upgrade to Standard
+                        </button>
+                    {% else %}
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-arrow-circle-down me-1"></i>Downgrade to Standard
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+            {% if user.subscription_tier != 'standard' %}
+            <div class="card-footer bg-dark text-center">
+                <span class="badge bg-primary">Most Popular</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Premium Plan -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm h-100 {% if user.subscription_tier == 'premium' %}border border-primary{% endif %}">
+            <div class="card-header bg-dark text-center">
+                <h3 class="m-0">Premium</h3>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="display-4">$9.99</div>
+                    <p class="text-muted">per month</p>
+                </div>
+                
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>50,000 characters per analysis
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>100 analyses per day
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>Advanced NLP features
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>All export formats
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>Batch processing
+                    </li>
+                    <li class="list-group-item bg-transparent">
+                        <i class="fas fa-check text-success me-2"></i>API access
+                    </li>
+                </ul>
+                
+                <div class="d-grid">
+                    {% if user.subscription_tier == 'premium' %}
+                        <button class="btn btn-outline-secondary" disabled>
+                            <i class="fas fa-check-circle me-1"></i>Current Plan
+                        </button>
+                    {% else %}
+                        <button class="btn btn-info">
+                            <i class="fas fa-arrow-circle-up me-1"></i>Upgrade to Premium
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Enterprise Section -->
+    <div class="col-12 mt-4">
+        <div class="card shadow-sm bg-dark border-0">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3 class="text-info mb-3">
+                            <i class="fas fa-building me-2"></i>Enterprise Solution
+                        </h3>
+                        <p class="text-light mb-4">
+                            Need a custom solution for your organization? Our enterprise plan offers:
+                        </p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>Custom integrations
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>Dedicated support
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>SLA guarantees
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>Custom model training
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>On-premise deployment
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>Volume discounts
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mt-3 mt-md-0">
+                        <a href="#" class="btn btn-light btn-lg">
+                            <i class="fas fa-envelope me-1"></i>Contact Sales
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- FAQ Section -->
+    <div class="col-12 mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h4 class="m-0">
+                    <i class="fas fa-question-circle text-info me-2"></i>Frequently Asked Questions
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="subscriptionFAQ">
+                    <div class="accordion-item border-0 mb-3">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                How do I know which plan is right for me?
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#subscriptionFAQ">
+                            <div class="accordion-body">
+                                The right plan depends on your text analysis needs. If you're just trying out our service or have minimal needs, the Free plan is a good starting point. For more regular users with longer texts, the Standard plan offers a great balance. The Premium plan is ideal for power users who need API access, batch processing, and the highest limits.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 mb-3">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Can I cancel or change my subscription at any time?
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#subscriptionFAQ">
+                            <div class="accordion-body">
+                                Yes, you can upgrade, downgrade, or cancel your subscription at any time. Changes take effect at the start of your next billing cycle. There are no long-term commitments or cancellation fees.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0 mb-3">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                What payment methods do you accept?
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#subscriptionFAQ">
+                            <div class="accordion-body">
+                                We accept all major credit cards, including Visa, Mastercard, American Express, and Discover. We also support PayPal for your convenience.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="accordion-item border-0">
+                        <h2 class="accordion-header" id="headingFour">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                What features are included in "Advanced NLP"?
+                            </button>
+                        </h2>
+                        <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#subscriptionFAQ">
+                            <div class="accordion-body">
+                                Advanced NLP features include more detailed entity recognition, relationship extraction between entities, custom sentiment models for industry-specific vocabulary, topic modeling, and more sophisticated text summarization algorithms that produce higher quality results.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

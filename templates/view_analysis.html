@@ -1,0 +1,295 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0">
+                        <i class="fas fa-file-alt text-info me-2"></i>
+                        {% if analysis.title %}
+                            {{ analysis.title }}
+                        {% else %}
+                            Untitled Analysis
+                        {% endif %}
+                    </h2>
+                    <div>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Dashboard
+                        </a>
+                        <div class="dropdown d-inline-block ms-2">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-file-export me-1"></i>Export
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                                {% for format in current_user.get_tier_limits().export_formats %}
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-file-{{ format }} me-2"></i>{{ format|upper }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-muted mt-2">Analysis created on {{ analysis.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Original Text -->
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-dark">
+                <h4 class="m-0">
+                    <i class="fas fa-file-alt text-info me-2"></i>Original Text
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="bg-dark p-3 rounded" style="max-height: 500px; overflow-y: auto;">
+                    <p class="text-light mb-0">{{ analysis.content }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Summary -->
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-dark">
+                <h4 class="m-0">
+                    <i class="fas fa-compress-alt text-info me-2"></i>Summary
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="bg-dark p-3 rounded" style="max-height: 500px; overflow-y: auto;">
+                    <p class="text-light mb-0">{{ analysis.summary }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sentiment Analysis -->
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h4 class="m-0">
+                    <i class="fas fa-smile text-info me-2"></i>Sentiment Analysis
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <canvas id="sentimentChart" width="100%" height="100%"></canvas>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-center mb-4">
+                            {% if analysis.sentiment > 0.05 %}
+                                <i class="fas fa-smile fa-4x text-success mb-3"></i>
+                                <h4 class="text-success">Positive</h4>
+                                <p class="lead">Score: {{ "%.2f"|format(analysis.sentiment) }}</p>
+                            {% elif analysis.sentiment < -0.05 %}
+                                <i class="fas fa-frown fa-4x text-danger mb-3"></i>
+                                <h4 class="text-danger">Negative</h4>
+                                <p class="lead">Score: {{ "%.2f"|format(analysis.sentiment) }}</p>
+                            {% else %}
+                                <i class="fas fa-meh fa-4x text-warning mb-3"></i>
+                                <h4 class="text-warning">Neutral</h4>
+                                <p class="lead">Score: {{ "%.2f"|format(analysis.sentiment) }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <h5>Detailed Scores</h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Value</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Positive</td>
+                                <td>{{ "%.2f"|format(results.sentiment.positive) }}</td>
+                                <td>Proportion of positive words</td>
+                            </tr>
+                            <tr>
+                                <td>Negative</td>
+                                <td>{{ "%.2f"|format(results.sentiment.negative) }}</td>
+                                <td>Proportion of negative words</td>
+                            </tr>
+                            <tr>
+                                <td>Neutral</td>
+                                <td>{{ "%.2f"|format(results.sentiment.neutral) }}</td>
+                                <td>Proportion of neutral words</td>
+                            </tr>
+                            <tr>
+                                <td>Compound</td>
+                                <td>{{ "%.2f"|format(results.sentiment.compound) }}</td>
+                                <td>Overall sentiment (-1 to +1)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Word Frequencies -->
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h4 class="m-0">
+                    <i class="fas fa-chart-bar text-info me-2"></i>Word Frequencies
+                </h4>
+            </div>
+            <div class="card-body">
+                <canvas id="wordFrequencyChart" width="100%" height="300"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Named Entities -->
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h4 class="m-0">
+                    <i class="fas fa-tag text-info me-2"></i>Named Entities
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="row" id="entitiesContainer">
+                    {% for entity_type, entities in results.entities.items() %}
+                        {% if entities %}
+                            <div class="col-md-6 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">{{ entity_type }}</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            {% for entity in entities %}
+                                                <li class="list-group-item bg-transparent">{{ entity }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Keywords -->
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h4 class="m-0">
+                    <i class="fas fa-key text-info me-2"></i>Keywords
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="d-flex flex-wrap" id="keywordsContainer">
+                    {% for keyword in results.keywords %}
+                        <span class="badge bg-info m-1 p-2">{{ keyword }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Sentiment Chart
+    const sentimentCtx = document.getElementById('sentimentChart').getContext('2d');
+    const sentimentData = {{ results.sentiment|tojson }};
+    
+    new Chart(sentimentCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Positive', 'Negative', 'Neutral'],
+            datasets: [{
+                data: [
+                    sentimentData.positive,
+                    sentimentData.negative,
+                    sentimentData.neutral
+                ],
+                backgroundColor: [
+                    'rgba(40, 167, 69, 0.7)',
+                    'rgba(220, 53, 69, 0.7)',
+                    'rgba(108, 117, 125, 0.7)'
+                ],
+                borderColor: [
+                    'rgb(40, 167, 69)',
+                    'rgb(220, 53, 69)',
+                    'rgb(108, 117, 125)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+    
+    // Word Frequency Chart
+    const wordFreqCtx = document.getElementById('wordFrequencyChart').getContext('2d');
+    const wordFreqData = {{ results.wordFrequencies|tojson }};
+    
+    const labels = wordFreqData.map(item => item.word);
+    const values = wordFreqData.map(item => item.count);
+    
+    new Chart(wordFreqCtx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Word Frequency',
+                data: values,
+                backgroundColor: 'rgba(23, 162, 184, 0.7)',
+                borderColor: 'rgb(23, 162, 184)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

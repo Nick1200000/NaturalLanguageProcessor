@@ -1,0 +1,235 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="mb-0">
+                        <i class="fas fa-code text-info me-2"></i>API Documentation
+                    </h2>
+                    <span class="badge rounded-pill bg-success">Premium Feature</span>
+                </div>
+                <p class="text-muted mt-2">Integrate NLP Text Analyzer with your applications</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- API Overview -->
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h4 class="m-0">
+                    <i class="fas fa-info-circle text-info me-2"></i>API Overview
+                </h4>
+            </div>
+            <div class="card-body">
+                <p>
+                    The NLP Text Analyzer API provides programmatic access to our natural language processing capabilities.
+                    Use our API to analyze text, extract insights, and integrate powerful NLP features into your own applications.
+                </p>
+                
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-key me-2"></i>Your API Key</h5>
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="{{ user.api_key or 'Not generated yet' }}" readonly>
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    {% if not user.api_key %}
+                    <div class="mt-2">
+                        <a href="#" class="btn btn-sm btn-primary">Generate API Key</a>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <h5 class="mt-4">Base URL</h5>
+                <div class="bg-dark p-3 rounded mb-4">
+                    <code class="text-info">https://api.nlpanalyzer.com/v1</code>
+                </div>
+                
+                <h5>Authentication</h5>
+                <p>All API requests require authentication using your API key in the headers:</p>
+                <div class="bg-dark p-3 rounded mb-4">
+                    <code class="text-info">X-API-Key: your_api_key_here</code>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- API Endpoints -->
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h4 class="m-0">
+                    <i class="fas fa-sitemap text-info me-2"></i>API Endpoints
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="endpoint mb-5">
+                    <h5 class="d-flex align-items-center">
+                        <span class="badge bg-success me-2">POST</span>
+                        <code>/analyze</code>
+                    </h5>
+                    <p class="text-muted">Analyze text with specified NLP operations</p>
+                    
+                    <h6 class="mt-3">Request Body</h6>
+                    <div class="bg-dark p-3 rounded mb-3">
+<pre class="text-info mb-0">{
+  "text": "Your text to analyze goes here.",
+  "operations": ["sentiment", "entities", "summary", "keywords", "word_frequencies"]
+}</pre>
+                    </div>
+                    
+                    <h6>Parameters</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Parameter</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>text</code></td>
+                                <td>String</td>
+                                <td>Yes</td>
+                                <td>The text content to analyze (maximum 50,000 characters)</td>
+                            </tr>
+                            <tr>
+                                <td><code>operations</code></td>
+                                <td>Array</td>
+                                <td>No</td>
+                                <td>Array of operations to perform. Defaults to all operations if not specified.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h6 class="mt-4">Example Request</h6>
+                    <div class="bg-dark p-3 rounded mb-3">
+<pre class="text-info mb-0">curl -X POST https://api.nlpanalyzer.com/v1/analyze \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: your_api_key_here" \
+  -d '{
+    "text": "Apple Inc. is an American multinational technology company headquartered in Cupertino, California. Apple is the world\'s largest technology company by revenue, with US$394.3 billion in 2022 revenue. As of March 2023, Apple is the world\'s biggest company by market capitalization.",
+    "operations": ["sentiment", "entities", "summary"]
+  }'</pre>
+                    </div>
+                    
+                    <h6 class="mt-4">Example Response</h6>
+                    <div class="bg-dark p-3 rounded">
+<pre class="text-info mb-0">{
+  "sentiment": {
+    "compound": 0.34,
+    "positive": 0.18,
+    "negative": 0.0,
+    "neutral": 0.82,
+    "sentiment": "positive"
+  },
+  "entities": {
+    "ORGANIZATION": ["Apple Inc.", "Apple"],
+    "GPE": ["California", "Cupertino"],
+    "DATE": ["2022", "March 2023"]
+  },
+  "summary": "Apple Inc. is an American multinational technology company headquartered in Cupertino, California. Apple is the world's largest technology company by revenue, with US$394.3 billion in 2022 revenue."
+}</pre>
+                    </div>
+                </div>
+                
+                <!-- Rate Limits Section -->
+                <div class="mt-5">
+                    <h5><i class="fas fa-tachometer-alt text-info me-2"></i>Rate Limits</h5>
+                    <p>Premium tier subscribers are limited to 5,000 API requests per day. Exceeding this limit will result in 429 (Too Many Requests) responses.</p>
+                    
+                    <h6 class="mt-4">Response Headers</h6>
+                    <p>Each response includes headers that provide information about your current rate limit status:</p>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Header</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>X-RateLimit-Limit</code></td>
+                                <td>The maximum number of requests allowed per day</td>
+                            </tr>
+                            <tr>
+                                <td><code>X-RateLimit-Remaining</code></td>
+                                <td>The number of requests remaining in the current period</td>
+                            </tr>
+                            <tr>
+                                <td><code>X-RateLimit-Reset</code></td>
+                                <td>The time when the current rate limit window resets (Unix timestamp)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Code Libraries -->
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark">
+                <h4 class="m-0">
+                    <i class="fas fa-book text-info me-2"></i>Code Libraries
+                </h4>
+            </div>
+            <div class="card-body">
+                <p>Use our client libraries to easily integrate with the NLP Text Analyzer API:</p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fab fa-python fa-3x text-info mb-3"></i>
+                                <h5>Python</h5>
+                                <p class="small">Great for data science and backend applications</p>
+                                <div class="bg-dark p-2 rounded mb-3">
+                                    <code class="text-info">pip install nlp-analyzer</code>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-outline-primary">View Docs</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fab fa-js fa-3x text-info mb-3"></i>
+                                <h5>JavaScript</h5>
+                                <p class="small">Perfect for web applications and Node.js</p>
+                                <div class="bg-dark p-2 rounded mb-3">
+                                    <code class="text-info">npm install nlp-analyzer</code>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-outline-primary">View Docs</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <i class="fab fa-java fa-3x text-info mb-3"></i>
+                                <h5>Java</h5>
+                                <p class="small">Ideal for enterprise applications</p>
+                                <div class="bg-dark p-2 rounded mb-3">
+                                    <code class="text-info">maven: com.nlpanalyzer:client</code>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-outline-primary">View Docs</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
