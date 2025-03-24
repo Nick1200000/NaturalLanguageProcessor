@@ -1,0 +1,74 @@
+image: python:3.11-slim
+
+stages:
+  - test
+  - build
+  - deploy
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  POSTGRES_DB: test_db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: postgres
+  DATABASE_URL: postgresql://postgres:postgres@postgres:5432/test_db
+
+services:
+  - docker:dind
+  - postgres:14-alpine
+
+before_script:
+  - apt-get update && apt-get install -y build-essential
+
+test:
+  stage: test
+  script:
+    - pip install --upgrade pip
+    - pip install -e .
+    - python -m nltk.downloader punkt stopwords vader_lexicon averaged_perceptron_tagger maxent_ne_chunker words wordnet
+    - pytest
+  artifacts:
+    paths:
+      - coverage/
+    expire_in: 1 week
+
+build:
+  stage: build
+  image: docker:20.10
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA -t $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE:latest
+  only:
+    - main
+    - master
+
+deploy_staging:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  script:
+    - kubectl config use-context $KUBE_CONTEXT
+    - kubectl set image deployment/nlp-analyzer nlp-analyzer=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --record
+    - kubectl rollout status deployment/nlp-analyzer
+  environment:
+    name: staging
+  only:
+    - main
+    - master
+
+deploy_production:
+  stage: deploy
+  image: bitnami/kubectl:latest
+  script:
+    - kubectl config use-context $KUBE_CONTEXT
+    - kubectl set image deployment/nlp-analyzer nlp-analyzer=$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA --record
+    - kubectl rollout status deployment/nlp-analyzer
+  environment:
+    name: production
+  when: manual
+  only:
+    - main
+    - master
